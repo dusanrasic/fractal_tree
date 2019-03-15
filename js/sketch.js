@@ -1,9 +1,11 @@
 var tree = [];
 var leaves = [];
 var count = 0;
+var _b = null;
 
 function setup() {
 	createCanvas(windowWidth, windowHeight);
+	frameRate(120);
 	var a = createVector(width/2, height);
 	var b = createVector(width/2, height-100);
 
@@ -19,8 +21,8 @@ function setup() {
 function addBranches() {
 	for(var i = tree.length - 1; i >= 0; i--) {
 		if(!tree[i].finished) {
-			tree.push(tree[i].branchA(PI/6));
-			tree.push(tree[i].branchB(PI/6));
+			tree.push(tree[i].branchA());
+			tree.push(tree[i].branchB());
 		}
 		tree[i].finished = true;
 	}
@@ -39,15 +41,19 @@ function normalize (val, max, min) {
 
 function mouseMoved() {
 	if(mouseX > width/2) {
-		console.log(normalize(mouseX-width/2, width/2, 0), 'right');
-		for(var i=1; i<tree.length; i++) {
-			tree[i].update((normalize(width/2-mouseX, width/2, 0)));
+		for(var i=10; i < tree.length; i++) {
+			a = normalize(mouseX-width/2, width/2, 0);
+			_b = tree[i];
+			_b.update(a*30);
+			redraw();
 		}
 	}
 	else if(mouseX < width/2){
-		console.log(-(normalize(width/2-mouseX, width/2, 0)), 'left');
-		for(var i=1; i<tree.length; i++) {
-			tree[i].update(-(normalize(width/2-mouseX, width/2, 0)));
+		for(var i=10; i < tree.length; i++) {
+			a = -normalize(width/2-mouseX, width/2, 0);
+			_b = tree[i];
+			_b.update(a*30);
+			redraw();
 		}
 	}
 }
@@ -63,4 +69,6 @@ function draw() {
 		noStroke();
 		ellipse(leaves[i].x, leaves[i].y, 8, 8);
 	}
+
+	return null;
 }
